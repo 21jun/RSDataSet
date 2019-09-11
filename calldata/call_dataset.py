@@ -9,7 +9,6 @@ class RSDataSet:
         self.mapping_table = {} # user_ids, item_ids
 
         self._load_dataset()
-
         self._verify_dataset()
     
     # 데이터셋 마다 다른 로드 구현이 필요
@@ -18,16 +17,19 @@ class RSDataSet:
     
     # 인덱스로 해당 유저의 id 를 검색
     def get_user_id(self, i):
-        print(f'user index = {i}, actual user id = {self.mapping_table["user_ids"][i]}')
+        assert i < self.user_num
+        return self.mapping_table['user_ids'][i]
     
     # 인덱스로 해당 아이템의 id 를 검색
     def get_item_id(self, i):
-        print(f'item index = {i}, actual item id = {self.mapping_table["item_ids"][i]}')
+        assert i < self.item_num
+        return self.mapping_table['item_ids'][i]
         
     # 생성한 데이터셋이 정상적으로 로드되었는지 검증
     def _verify_dataset(self):
         assert self.user_num > 0
         assert self.item_num > 0
+        assert self.user_num == self.__len__()
     
     # 생성한 인스턴스에서 바로 User-Item Rating Matrix 로 접근 가능
     def __getitem__(self, i):
@@ -42,16 +44,6 @@ class RSDataSet:
         f'\n{self.name}\n' +\
         f'number of users : {self.user_num}\n' +\
         f'number of items : {self.item_num}'
-
-# 데이터로더에 데이터셋을 등록하면 원하는 배치사이즈 만큼씩 iteration 가능
-class RSDataLoader():
-    def __init__(self, ds: RSDataSet, bs=1):
-        self.ds, self.bs = ds, bs
-
-    def __iter__(self):
-        for i in range(0, len(self.ds), self.bs):
-            yield self.ds[i : i+self.bs]
-
 
 class MovieLensDataSet(RSDataSet):
     def __init__(self, filepath):
@@ -89,7 +81,7 @@ class BookCrossingDataSet(RSDataSet):
     
     def _load_dataset(self):
 
-        df = pd.read_csv(self.filepath, sep=';')
+        df = pd.read_csv(self.filepath, sep=';', encoding='utf-8')
         df = df.iloc[:1000, :]  # 앞쪽 1000개의 row 만 사용
         # 전체 데이터로 메트릭스 만들면 메모리 초과 (over 16gb)
 
@@ -145,3 +137,11 @@ class NetflixDataSet(RSDataSet):
         pass
 
 
+# 데이터로더에 데이터셋을 등록하면 원하는 배치사이즈 만큼씩 iteration 가능
+class RSDataLoader():
+    def __init__(self, ds: RSDataSet, bs=1):
+        self.ds, self.bs = ds, bs
+
+    def __iter__(self):
+        for i in range(0, len(self.ds), self.bs):
+            yield self.ds[i : i+self.bs]
