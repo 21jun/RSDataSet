@@ -137,7 +137,7 @@ class NetflixDataSet(RSDataSet):
         pass
 
 
-# 데이터로더에 데이터셋을 등록하면 원하는 배치사이즈 만큼씩 iteration 가능
+# 데이터로더에 데이터셋을 등록하면 원하는 배치사이즈 만큼 씩 iteration 가능
 class RSDataLoader():
     def __init__(self, ds: RSDataSet, bs=1):
         self.ds, self.bs = ds, bs
