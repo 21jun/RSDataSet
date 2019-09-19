@@ -66,7 +66,7 @@ class MovieLensDataSet(RSDataSet):
         with open(self.filepath) as f:
             for line in f:
                 user_id, item_id, rating, _ = line.split('\t')
-                matrix[int(user_id)-1][int(item_id)-1] = int(rating)
+                matrix[int(user_id)-1][int(item_id)-1] = int(rating) if int(rating) is not 0 else np.nan
 
         self.x = matrix
 
