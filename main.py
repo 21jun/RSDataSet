@@ -15,5 +15,7 @@ if __name__ == '__main__':
     # print(cos.sim_)
     
     pcc = PCC(MovieLens)
-    print(MovieLens)
     print(pcc.fit())
+    # print(cos.sim_)
+    # print(MovieLens)
+    # print(pcc.fit())
