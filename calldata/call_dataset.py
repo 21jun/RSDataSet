@@ -101,6 +101,7 @@ class JesterDataSet(RSDataSet):
     def _load_dataset(self):
     
         df = pd.read_excel(self.filepath, header=None)
+        df = df.replace(99.00, np.nan) # 99.00 == NULL
         df= df.iloc[:, 1:]  # 첫번째 컬럼은 필요없기에 제거
         self.user_num , self.item_num = df.shape
         matrix = df
