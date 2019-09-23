@@ -17,7 +17,7 @@ class Similarity():
 
     def set_base(self, base):
         _base = base.lower()
-        assert _base in self.options, "Choose btw [user][item]"
+        assert _base in self.options, "Choose btw [user][item][test]"
         self.base = _base
         self.m = self.matrix if self.base is 'user' else self.matrix.T
         if base is 'test':
@@ -41,11 +41,23 @@ class COS(Similarity):
         self.set_base(base)
         # nan 값을 모두 0.0 으로 치환
         self.m = np.nan_to_num(self.m)
-        # item base 일때 transpose로 처리
         d = self.m @ self.m.T
         norm = np.linalg.norm(self.m, axis=1)
         norm = norm.reshape(norm.shape[0], -1)
         self.sim_ = d / (norm * norm.T)
+
+class COS2(Similarity):
+
+    def __init__(self, dataset):
+        super().__init__(dataset)
+    
+    def fit(self, base = 'user'):
+        self.set_base(base)
+
+        self.m = nan_to_num(self.m)
+        for r in range(m.shape[0]):
+            a = m[r]
+
 
 class PCC(Similarity):
 
@@ -55,7 +67,6 @@ class PCC(Similarity):
     def fit(self, base='user'):
         self.set_base(base)
         # PCC는 데이터셋에 따라 0을 nan으로 바꿔줘야함.!!!
-        # dataset에서 0으로 나오는 애들 모두 nan으로 바꿔두자. (더 의미 있음)
         mean = np.nanmean(self.m, axis=1)
         mean = mean.reshape(mean.shape[0], -1)
         B = self.m - mean
