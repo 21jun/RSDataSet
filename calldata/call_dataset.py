@@ -68,7 +68,7 @@ class MovieLensDataSet(RSDataSet):
                 user_id, item_id, rating, _ = line.split('\t')
                 matrix[int(user_id)-1][int(item_id)-1] = int(rating) if int(rating) is not 0 else np.nan
 
-        self.x = matrix
+        self.x = np.array(matrix)
 
         user_ids = [id for id in range(1, self.user_num)]
         item_ids = [id for id in range(1, self.item_num)]
@@ -87,7 +87,7 @@ class BookCrossingDataSet(RSDataSet):
 
         matrix = df.pivot(index='User-ID', columns='ISBN', values='Book-Rating')
         self.user_num, self.item_num = matrix.shape
-        self.x = matrix.values.tolist()
+        self.x = matrix.values
 
         user_ids = matrix.index.values.tolist()
         item_ids = matrix.columns.values.tolist()
@@ -102,10 +102,11 @@ class JesterDataSet(RSDataSet):
     
         df = pd.read_excel(self.filepath, header=None)
         df = df.replace(99.00, np.nan) # 99.00 == NULL
-        df= df.iloc[:, 1:]  # 첫번째 컬럼은 필요없기에 제거
+        df= df.iloc[:, 1:]  # 첫번째 컬럼은 필요없기에 제거(평점 개수)
         self.user_num , self.item_num = df.shape
         matrix = df
-        self.x = matrix.values.tolist()
+        # self.x = matrix.values.tolist()
+        self.x = matrix.values
 
         user_ids = matrix.index.values.tolist()
         item_ids = matrix.columns.values.tolist()
@@ -122,7 +123,7 @@ class EachMovieDataSet(RSDataSet):
         matrix = df.pivot(index='user_id', columns='item_id', values='rating')
 
         self. user_num, self.item_num = matrix.shape
-        self.x = matrix.values.tolist()
+        self.x = matrix.values
 
         user_ids = matrix.index.values.tolist()
         item_ids = matrix.columns.values.tolist()
