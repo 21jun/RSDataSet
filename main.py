@@ -1,23 +1,30 @@
-from calldata.call_dataset import JesterDataSet, MovieLensDataSet
-from similarity.similarity import CosineSimilarity 
+from calldata.call_dataset import JesterDataSet, MovieLensDataSet, EachMovieDataSet
+from similarity.similarity import CosineSimilarity
 from similarity.similarity import PearsonCorrelationCoefficient
 from similarity.similarity import JaccardSimilarity
-
+from predict.collaborative_filtering import CollaborativeFiltering
+from pandas import DataFrame
 
 if __name__ == '__main__':
-    
-
-    Jester = JesterDataSet('./dataset/jester-data-1/jester-data-1.xls')
+    # 데이터셋 불러오기
     MovieLens = MovieLensDataSet('./dataset/ml-100k/u.data')
-    
+
+    # 유사도 모듈 불러오기
     cos = CosineSimilarity()
-    cos.fit(MovieLens)
-    print(cos.sim_)
+    pcc = PearsonCorrelationCoefficient()
 
-    # pcc = PearsonCorrelationCoefficient()
-    # pcc.fit(MovieLens)
-    # print(pcc.sim_)
+    # basic Collaborative Filtering
+    basic = CollaborativeFiltering(with_='none')
+    basic.fit(MovieLens, pcc, k=3, base='test')
+    print(DataFrame(basic.predicted_rating))
 
-    # jac = JaccardSimilarity()
-    # jac.fit(s, 'user')
-    # print(jac.sim_)
+    # Collaborative Filtering with baseline
+    baseline = CollaborativeFiltering(with_='baseline')
+    baseline.fit(MovieLens, cos, k=2, base='user')
+    print(DataFrame(baseline.predicted_rating))
+    
+    # Collaborative Filtering with mean
+    mean = CollaborativeFiltering(with_='mean')
+    mean.fit(MovieLens, cos, k=2, base='test')
+    print(DataFrame(mean.predicted_rating))
+

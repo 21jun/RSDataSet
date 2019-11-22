@@ -3,3 +3,5 @@ __pycache__/
 /calldata/__pycache__/
 .vscode/
 *.ipynb
+.idea/
+.ipynb_checkpoints/
