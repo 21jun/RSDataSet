@@ -1,4 +1,4 @@
-from calldata.call_dataset import JesterDataSet, MovieLensDataSet, EachMovieDataSet
+from calldata.RS_dataset import JesterDataSet, MovieLensDataSet, EachMovieDataSet
 from similarity.similarity import CosineSimilarity
 from similarity.similarity import PearsonCorrelationCoefficient
 from similarity.similarity import JaccardSimilarity

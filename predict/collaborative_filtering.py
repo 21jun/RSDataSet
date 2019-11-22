@@ -3,30 +3,6 @@ from similarity.similarity import Similarity
 from calldata.call_dataset import RSDataSet
 import time
 
-# TODO: 아래 TODO 코드들을 주석제거하면 PPT와 같은 결과가 나옵니다.
-# 제가 생각하기에 0을 null으로 처리하면 몇몇 데이터셋(Jester)에서 
-# 평점 0점을 처리하지 못하여 0을 null으로 처리하지 않도록 수정하였습니다.
-
-# TODO
-# def COS(mat):
-#     NumUsers = np.size(mat, axis=0)
-#     Sim = np.full((NumUsers, NumUsers), 0.0)
-#     for u in range(0, NumUsers):
-#         arridx_u = np.where(mat[u] == 0)
-#         for v in range(u + 1, NumUsers):
-#             arridx_v = np.where(mat[v] == 0)
-#             arridx = np.unique(np.concatenate((arridx_u, arridx_v), axis=None))
-#
-#             U = np.delete(mat[u], arridx)
-#             V = np.delete(mat[v], arridx)
-#
-#             if np.linalg.norm(U) == 0 or np.linalg.norm(V) == 0:
-#                 Sim[u, v] = 0
-#             else:
-#                 Sim[u, v] = np.dot(U, V) / (np.linalg.norm(U) * np.linalg.norm(V))
-#             Sim[v, u] = Sim[u, v]
-#     return Sim
-
 
 class CollaborativeFiltering:
 
