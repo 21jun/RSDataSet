@@ -9,7 +9,7 @@ from pandas import DataFrame
 if __name__ == '__main__':
     # 데이터셋 불러오기
     MovieLens = MovieLensDataSet('./dataset/ml-100k/u.data')
-
+    # EachMovie = EachMovieDataSet('./dataset/rec-eachmovie/rec-eachmovie.edges')
     
     u1 = 0
     u2 = 9
